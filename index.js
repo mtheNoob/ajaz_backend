@@ -14,8 +14,6 @@ app.use(cors());
 app.use('/uploads', express.static('uploads'));
 
 // Token verification
-const verifyToken = require('./app/middleware/verifyToken');
-app.use(verifyToken);
 
 // Global CORS & Logging Middleware
 app.use(function (req, res, next) {
