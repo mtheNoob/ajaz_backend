@@ -97,6 +97,25 @@ apiRoutes.post("/update-post", upload.single("image"), async (req, res) => {
   }
 });
 
+apiRoutes.post("/delete-post", async (req, res) => {
+  try {
+    const { postId } = req.body;
+
+    const deletedPost = await Post.findOneAndDelete({ postId });
+
+    if (!deletedPost) {
+      return res.status(404).json("Post not found");
+    }
+
+    res.status(200).json({
+      message: "Post deleted successfully!",
+      deleted: deletedPost
+    });
+
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
+});
 
   app.use("/", apiRoutes);
 
