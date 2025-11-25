@@ -44,6 +44,60 @@ module.exports = function (app) {
     }
   });
 
+  apiRoutes.get("/get-posts", async (req, res) => {
+  try {
+    const posts = await Post.find();
+
+    res.status(200).json({
+      message: "Posts fetched successfully!",
+      data: posts,
+    });
+
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
+});
+
+apiRoutes.post("/update-post", upload.single("image"), async (req, res) => {
+  try {
+    const { title, description, postId } = req.body;
+
+    // Find the post
+    const post = await Post.findOne({ postId });
+    if (!post) {
+      return res.status(404).json("Post not found");
+    }
+
+    // Title duplicate check (only if title changed)
+    if (title && title !== post.title) {
+      const titleExists = await Post.findOne({ title });
+      if (titleExists) {
+        return res.status(400).json("A post with this title already exists!");
+      }
+    }
+
+    // Update fields
+    if (title) post.title = title;
+    if (description) post.description = description;
+
+    // If new image uploaded
+    if (req.file) {
+      post.image = req.file.filename;
+    }
+
+    await post.save();
+
+    res.status(200).json({
+      message: "Post updated successfully!",
+      data: post,
+    });
+
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
+});
+
+
   app.use("/", apiRoutes);
 
 
