@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const userSchema =new mongoose.Schema({
-    userId: {
+    enquiryId: {
         type: String,
         required: true,
         primary: true,
@@ -12,7 +12,7 @@ const userSchema =new mongoose.Schema({
         required: true,
         unique: true,
     },
-    password: {
+    reason: {
         type: String,
         required: true,
     },
@@ -20,12 +20,16 @@ const userSchema =new mongoose.Schema({
         type: String,
         required: true,
     },
-    profilePicture: {
+    phone: {
         type: String,
         default: '',
       },
+          message: {
+        type: String,
+        required: true,
+    },
       
 
 });
-const User= mongoose.model('UserTable', userSchema); 
-module.exports = User;
+const Enquiry= mongoose.model('enquries', userSchema); 
+module.exports = Enquiry;

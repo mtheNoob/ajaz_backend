@@ -4,7 +4,7 @@ module.exports = (app)=>{
 
     mongoose
     .connect(
-      "mongodb+srv://hellorajubhaiya:Ammu7860@clustertuba.wx8jb.mongodb.net/Practice?retryWrites=true&w=majority&appName=ClusterTuba",
+      "mongodb+srv://hellorajubhaiya:Ammu7860@clustertuba.wx8jb.mongodb.net/IntoTheStadium?retryWrites=true&w=majority&appName=ClusterTuba",
       { useNewUrlParser: true, useUnifiedTopology: true }
     )
     .then(() => {
