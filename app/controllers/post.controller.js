@@ -10,7 +10,7 @@ module.exports = function (app) {
 
   apiRoutes.post("/create-post", upload.single("image"), async (req, res) => {
     try {
-      const { title, description } = req.body;
+      const { title, description, url } = req.body;
 
       if (!title || !description) {
         return res.status(400).json("Title and Description are required");
@@ -28,6 +28,7 @@ module.exports = function (app) {
       const postData = new Post({
         postId: randomPostId,
         title,
+        url,
         description,
         image,
       });
@@ -60,7 +61,7 @@ module.exports = function (app) {
 
 apiRoutes.post("/update-post", upload.single("image"), async (req, res) => {
   try {
-    const { title, description, postId } = req.body;
+    const { title, description, postId , url} = req.body;
 
     // Find the post
     const post = await Post.findOne({ postId });
@@ -78,6 +79,8 @@ apiRoutes.post("/update-post", upload.single("image"), async (req, res) => {
 
     // Update fields
     if (title) post.title = title;
+        if (url) post.url = url;
+
     if (description) post.description = description;
 
     // If new image uploaded

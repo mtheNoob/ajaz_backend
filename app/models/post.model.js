@@ -20,6 +20,10 @@ const postSchema =new mongoose.Schema({
         type: String,
         default: '',
       },
+        url: {
+        type: String,
+        required: false,
+    },
       
 
 });
