@@ -69,6 +69,34 @@ apiRoutes.get("/get-enquiry", async (req, res) => {
   }
 });
 
+apiRoutes.post("/delete-enquiry", async (req, res) => {
+  try {
+    const { enquiryId } = req.body;
+
+    const existing = await Enquiry.findOne({ enquiryId });
+
+    if (!existing) {
+      return res.status(404).json({
+        message: "No enquiry found with the provided enquiryId.",
+      });
+    }
+
+    await Enquiry.deleteOne({ enquiryId });
+
+    return res.status(200).json({
+      message: "Enquiry deleted successfully.",
+      deletedEnquiryId: enquiryId,
+    });
+
+  } catch (error) {
+    console.error("Error deleting enquiry:", error);
+    return res.status(500).json({
+      message: "Internal Server Error.",
+      error: error.message,
+    });
+  }
+});
+
   app.use("/", apiRoutes);
 
 
