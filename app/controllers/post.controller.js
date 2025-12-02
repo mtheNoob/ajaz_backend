@@ -8,42 +8,72 @@ const multer = require("multer")
 const path = require("path")
 module.exports = function (app) {
 
+  // apiRoutes.post("/create-post", upload.single("image"), async (req, res) => {
+  //   try {
+  //     const { title, description, url } = req.body;
+
+  //     if (!title || !description) {
+  //       return res.status(400).json("Title and Description are required");
+  //     }
+
+  //     const postExists = await Post.findOne({ title });
+  //     if (postExists) {
+  //       return res.status(400).json("A post with this title already exists!");
+  //     }
+
+  //     const randomPostId = "POST-" + Math.floor(Math.random() * 100000);
+
+  //     const image = req.file ? req.file.filename : "";
+
+  //     const postData = new Post({
+  //       postId: randomPostId,
+  //       title,
+  //       url,
+  //       description,
+  //       image,
+  //     });
+
+  //     await postData.save();
+
+  //     res.status(200).json({
+  //       message: "Post created successfully!",
+  //       data: postData,
+  //     });
+
+  //   } catch (error) {
+  //     res.status(500).json(error.message);
+  //   }
+  // });
+
   apiRoutes.post("/create-post", upload.single("image"), async (req, res) => {
-    try {
-      const { title, description, url } = req.body;
-
-      if (!title || !description) {
-        return res.status(400).json("Title and Description are required");
-      }
-
-      const postExists = await Post.findOne({ title });
-      if (postExists) {
-        return res.status(400).json("A post with this title already exists!");
-      }
-
-      const randomPostId = "POST-" + Math.floor(Math.random() * 100000);
-
-      const image = req.file ? req.file.filename : "";
-
-      const postData = new Post({
-        postId: randomPostId,
-        title,
-        url,
-        description,
-        image,
-      });
-
-      await postData.save();
-
-      res.status(200).json({
-        message: "Post created successfully!",
-        data: postData,
-      });
-
-    } catch (error) {
-      res.status(500).json(error.message);
+  try {
+    const { title, description, url } = req.body;
+    if (!title || !description) {
+      return res.status(400).json("Title and Description are required");
     }
-  });
+    const postExists = await Post.findOne({ title });
+    if (postExists) {
+      return res.status(400).json("A post with this title already exists!");
+    }
+    const randomPostId = "POST-" + Math.floor(Math.random() * 100000);
+    // :white_check_mark: CLOUDINARY IMAGE URL (PERMANENT)
+    const image = req.file ? req.file.path : "";
+    const postData = new Post({
+      postId: randomPostId,
+      title,
+      url,
+      description,
+      image, // :white_check_mark: now stores full permanent cloud URL
+    });
+    await postData.save();
+    res.status(200).json({
+      message: "Post created successfully!",
+      data: postData,
+    });
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
+});
 
   apiRoutes.get("/get-posts", async (req, res) => {
   try {
